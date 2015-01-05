@@ -1,0 +1,11 @@
+{"version":3,
+ "file":
+ "/Users/dev/src/cljs/play/datascript-todo/resources/public/js/out/datascript_todo/react.js",
+ "sources":["react.cljs?rel=1420461332761"],
+ "lineCount":35,
+ "mappings":
+ ";AAAA;;AAEA,kCAAA,lCAAMA,sDAAWC;AAAjB,AACE,IAAMC,kBACA,kBAAA,lBAAcC,6BAEN;AAAA,AACE,YAAA,RAASC;AAAT,AACE,OAACC,0BAAMJ,UAAU,aAAA,ZAAM,AAASG;;AALlD,AAOE;;mCAAOE;AAAP,AACE,iCAAA,1BAACJ,mCAA2BI;;;IADvBA;;EAAAA;;oCAAAA;;;IAAAA;0BAAAA;;;;;;;;AAGX,+BAAA,/BAAMC,gDAAQC,UAAUC;AAAxB,AACE,OAAkBN,sBAASK,UAAUC",
+ "names":
+ ["datascript-todo.react/component", "render-fn", "react-component",
+  "js/React", "this", "cljs.core/apply", "args",
+  "datascript-todo.react/render", "component", "node"]}
