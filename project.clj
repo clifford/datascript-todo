@@ -5,7 +5,7 @@
 
   :dependencies [
     [org.clojure/clojure "1.7.0-alpha4"]
-    [org.clojure/clojurescript "0.0-2411"]
+    [org.clojure/clojurescript "0.0-2511"]
     [datascript "0.7.1"]
     [sablono "0.2.22"]
     [com.facebook/react "0.11.2"]
@@ -15,6 +15,7 @@
     [figwheel "0.2.0-SNAPSHOT"]
     [environ "1.0.0"]
     [leiningen "2.5.0"]
+    [rum "0.1.0"]
   ]
 
   :min-lein-version "2.5.0"
