@@ -6,6 +6,7 @@
     [datascript :as d]
     [sablono.core]
     [cognitect.transit :as transit]
+    [rum :include-macros true]
     [datascript-todo.react :as r :include-macros true]
     [datascript-todo.dom :as dom]
     [datascript-todo.util :as u])
@@ -51,7 +52,7 @@
 
 ;; Keyword filter
 
-(r/defc filter-pane [db]
+(rum/defc filter-pane [db]
   [:.filter-pane
     [:input.filter {:type "text"
                     :value (or (system-attr db :system/filter) "")
@@ -132,7 +133,7 @@
                 [(<= ?from ?due ?to)]]
        db [(u/month-start month year) (u/month-end month year)]))
 
-(r/defc group-item [db title group item]
+(rum/defc group-item [db title group item]
   ;; Joining DB with a collection
   (let [todos (todos-by-group db group item)
         count (->> (d/q '[:find (count ?todo)
@@ -149,7 +150,7 @@
       (when count
         [:span.group-item-count count])]))
 
-(r/defc plan-group [db]
+(rum/defc plan-group [db]
   [:.group
     [:.group-title "Plan"]
     ;; Here we’re calculating month inside a query via passed in function
@@ -161,7 +162,7 @@
                               sort)]
       (group-item db (u/format-month month year) :month [year month]))])
 
-(r/defc projects-group [db]
+(rum/defc projects-group [db]
   [:.group
     [:.group-title "Projects"]
     (for [[pid name] (->> (d/q '[:find ?pid ?project
@@ -171,7 +172,7 @@
                           (sort-by second))]
       (group-item db name :project pid))])
 
-(r/defc overview-pane [db]
+(rum/defc overview-pane [db]
   [:.overview-pane
     [:.group
       (group-item db "Inbox"     :inbox nil)
@@ -192,7 +193,7 @@
 (defn toggle-todo [eid]
   (d/transact! conn [[:db.fn/call toggle-todo-tx eid]]))
 
-(r/defc todo-pane [db]
+(rum/defc todo-pane [db]
   [:.todo-pane
     (let [todos (let [[group item] (system-attr db :system/group :system/group-item)]
                   (todos-by-group db group item))]
@@ -244,7 +245,7 @@
       (d/transact! conn (concat project-tx [entity])))
     (clean-todo)))
 
-(r/defc add-view []
+(rum/defc add-view []
   [:form.add-view {:on-submit (fn [_] (add-todo) false)}
     [:input.add-text    {:type "text" :placeholder "New task"}]
     [:input.add-project {:type "text" :placeholder "Project"}]
@@ -257,7 +258,7 @@
 (defn db-identical? [x y]
   (== (.-max-tx x) (.-max-tx y)))
 
-(r/defc history-view [db]
+(rum/defc history-view [db]
   [:.history-view
     (for [state @history]
       [:.history-state
@@ -270,7 +271,7 @@
       [:button.history-btn {:on-click (fn [_] (reset-conn! next))} "redo →"]
       [:button.history-btn {:disabled true} "redo →"])])
 
-(r/defc canvas [db]
+(rum/defc canvas [db]
   [:.canvas
     [:.main-view
       (filter-pane db)

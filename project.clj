@@ -8,7 +8,7 @@
     [org.clojure/clojurescript "0.0-2511"]
     [datascript "0.7.1"]
     [sablono "0.2.22"]
-    [com.facebook/react "0.11.2"]
+;;    [com.facebook/react "0.11.2"]
     [com.cognitect/transit-cljs "0.8.194"]
     [ring "1.3.1"]
     [compojure "1.2.0"]
