@@ -7,7 +7,6 @@
     [sablono.core]
     [cognitect.transit :as transit]
     [rum :include-macros true]
-    [datascript-todo.react :as r :include-macros true]
     [datascript-todo.dom :as dom]
     [datascript-todo.util :as u])
   (:require-macros
@@ -287,7 +286,9 @@
   ([] (render @conn))
   ([db]
     (profile "render"
-      (r/render (canvas db) (.-body js/document)))))
+      ;; (r/render (canvas db) (.-body js/document))
+             (rum/mount (canvas db) (.-body js/document))
+             )))
 
 ;; re-render on every DB change
 (d/listen! conn :render
