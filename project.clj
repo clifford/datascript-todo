@@ -27,6 +27,10 @@
 
   :min-lein-version "2.5.0"
 
+  :hawk-paths ["resources/public/js" "js" "out"]
+
+  :clean-targets ^{:protect false} [:target-path :compile-path :hawk-paths]
+
   :plugins [
     [cider/cider-nrepl "0.8.1"]
             [lein-cljsbuild "1.0.4"]
