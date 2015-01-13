@@ -3,48 +3,44 @@
             [clojure.java.io :as io]
 
             [ring.util.http-response :refer [ok content-type header] :as resp]
-            [ring.middleware.params :refer [wrap-params]]
-            [ring.middleware.nested-params :refer [wrap-nested-params]]
-            [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.format :refer [wrap-restful-format]]
             [bidi.ring :as br]
-            [ring.util.response :refer (file-response url-response response)]
-            [org.httpkit.server :as httpkit]
-
-            ;;[bidi.ring :refer (make-handler)]
-            [compojure.core :refer [GET defroutes]]
-            [compojure.route :refer [resources]]
-            [compojure.handler :refer [api]]
-            [ring.middleware.reload :as reload]
             [environ.core :refer [env]]
-            [ring.adapter.jetty :refer [run-jetty]]))
+            [org.httpkit.server :as httpkit]))
 
 ;; trying to use juxt/bidi
+;; With help from Malcom Sparks (author of bidi)
+;; https://groups.google.com/d/msg/clojure/JNcU8Fhfz8Q/CxcZ-Zf35ZAJ
+(def routes
+  ["" [
+       ["/index.html" :index]
+       ["" (br/resources {:prefix "public"})]
+       ]])
 ;; (def routes
 ;;   ["/" {"index.html" ::home-page-handler
 ;;         "" (br/resources-maybe {:prefix "resources/public"})}])
 
-;; (def handlers
-;;   {::home-page-handler (fn [req]
-;;                          (->
-;;                           (io/resource "index.html")
-;;                           (slurp)
-;;                           (ok))
-;;                          ;;(response "Hello world!")
-;;                          )})
+(def handlers
+  {:index (fn [req]
+            (->
+             (io/resource "index.html")
+             (slurp)
+             (ok)))})
 
-;; ;; (def http-handler (br/make-handler routes handlers))
-;; (def http-handler (br/make-handler routes
-;;                   (some-fn handlers
-;;                            #(when (fn? %) %))))
+;; (def http-handler (br/make-handler routes handlers))
+;; see: https://github.com/juxt/bidi/issues/39
+;; for explanation for below
+(def http-handler (br/make-handler routes
+                  (some-fn handlers
+                           #(when (fn? %) %))))
 
 
 ;; using compojure
-(defroutes routes
-  (resources "/")
-  (GET "/*" req (io/resource "index.html")))
+;; (defroutes routes
+;;   (resources "/")
+;;   (GET "/*" req (io/resource "index.html")))
 
-(def http-handler (reload/wrap-reload (api #'routes)))
+;; (def http-handler (reload/wrap-reload (api #'routes)))
 
 (defn run [& [port]]
   (defonce ^:private server
